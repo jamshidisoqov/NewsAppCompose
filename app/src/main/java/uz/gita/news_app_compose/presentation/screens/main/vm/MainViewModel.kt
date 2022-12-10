@@ -1,7 +1,10 @@
 package uz.gita.news_app_compose.presentation.screens.main.vm
 
+import uz.gita.news_app_compose.data.remote.response.NewsData
 import uz.gita.news_app_compose.data.remote.response.Source
 import uz.gita.news_app_compose.utils.AppViewModel
+import uz.gita.news_app_compose.utils.ResultData
+import java.util.Locale.Category
 
 /*CREATED BY
 MATKARIMOV KHAYRULLO 
@@ -26,4 +29,7 @@ data class MainUiState(
         "technology"
 
     ),
+    val newsData:List<NewsData>?,
+    val isError:Boolean?,
+    val message: String?,
 )

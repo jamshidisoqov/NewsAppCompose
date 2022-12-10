@@ -64,7 +64,7 @@ IconButton(onClick = {
 
 }
 androidx.compose.material3.IconButton(onClick = {
-    onEventDispatcher(MainIntent.SelectLanguage)
+    onEventDispatcher(MainIntent.Search)
 
 }) {
     Icon(imageVector = Icons.Default.MoreVert, contentDescription = "")
