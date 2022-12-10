@@ -3,9 +3,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import uz.gita.news_app_compose.navigation.AppNavigator
-import uz.gita.news_app_compose.navigation.NavigationHandler
-import uz.gita.news_app_compose.navigation.NavigatorDispatcher
+import uz.gita.news_app_compose.navigation.*
 
 
 @Module
@@ -13,8 +11,8 @@ import uz.gita.news_app_compose.navigation.NavigatorDispatcher
 interface NavigatorModule {
 
     @Binds
-    fun appNavigator(dispatcher: NavigatorDispatcher): AppNavigator
+    fun appNavigator(dispatcher: NavigationDispatcher): AppNavigation
 
     @Binds
-    fun navigationHandler(dispatcher: NavigatorDispatcher): NavigationHandler
+    fun navigationHandler(dispatcher: NavigationDispatcher): NavigationHandler
 }
