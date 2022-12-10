@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             NewsAppComposeTheme {
                 Navigator(screen = SplashScreen(),
-                    onBackPressed = {_ ->
+                    onBackPressed = {
                         true
                     }
                 ) { navigator ->

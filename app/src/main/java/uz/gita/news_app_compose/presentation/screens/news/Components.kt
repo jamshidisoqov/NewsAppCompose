@@ -1,24 +1,26 @@
 package uz.gita.news_app_compose.presentation.screens.news
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import uz.gita.news_app_compose.data.remote.response.NewsData
 import uz.gita.news_app_compose.utils.HORIZONTAL_MARGIN_STD
 import uz.gita.news_app_compose.utils.ROUNDED_CORNER
 import uz.gita.news_app_compose.utils.VERTICAL_MARGIN_STD
+import uz.gita.news_app_compose.utils.languageList
 
 // Created by Jamshid Isoqov on 12/10/2022
 
@@ -235,5 +237,99 @@ fun DeleteDialog(
 fun DeleteDialogPreview() {
     DeleteDialog("Are you really delete book?") {
 
+    }
+}
+
+@Composable
+fun ChooseLanguageDialog(languageList: List<String>, onClick: (String) -> Unit) {
+    Dialog(onDismissRequest = { }) {
+        Column(
+            modifier = Modifier
+                .width(320.dp)
+                .background(Color.White, shape = RoundedCornerShape(16.dp))
+                .padding(24.dp)
+        ) {
+
+            Text(
+                text = "Choose language",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
+            )
+
+            LazyColumn(
+                modifier = Modifier
+                    .padding(top = HORIZONTAL_MARGIN_STD)
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                items(languageList.size) {
+                    val data = languageList[it]
+                    Text(
+                        text = data.uppercase(),
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(6.dp)
+                            .clickable {
+                                onClick.invoke(data)
+                            }
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun ChooseLanguageDialogPreview() {
+    ChooseLanguageDialog(languageList = languageList) {
+
+    }
+}
+
+@Composable
+fun NewsItem(newsData: NewsData, onClick: (NewsData) -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                onClick.invoke(newsData)
+            }
+            .clip(shape = RoundedCornerShape(20.dp))
+            .background(MaterialTheme.colorScheme.primary)
+            .padding(8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Column {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column {
+                    Text(text = newsData.title, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                    Text(text = newsData.author ?: "", fontSize = 16.sp)
+                }
+                Column(
+                    modifier = Modifier
+                        .clip(shape = RoundedCornerShape(20.dp))
+                        .background(MaterialTheme.colorScheme.inversePrimary)
+                        .padding(4.dp)
+                ) {
+                    Text(
+                        text = newsData.source.name,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(text = newsData.publishedAt, fontSize = 12.sp)
+                }
+            }
+            Text(text = newsData.description ?: "", fontSize = 12.sp)
+        }
     }
 }

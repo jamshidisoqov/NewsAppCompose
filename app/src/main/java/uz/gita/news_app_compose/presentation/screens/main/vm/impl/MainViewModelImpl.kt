@@ -63,6 +63,7 @@ class MainViewModelImpl @Inject constructor(
             is MainIntent.SelectedCategory->{
                 getNewsDataByCategory(intent.category)
             }
+            MainIntent.OpenLanguage->postSideEffect(MySideEffect.ChooseLanguage())
         }
     }
 }

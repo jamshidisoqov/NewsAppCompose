@@ -15,9 +15,11 @@ sealed class MainIntent {
     object Search : MainIntent()
     data class SelectLanguage(val lan:String) : MainIntent()
     data class SelectedCategory(val category:String):MainIntent()
+    object OpenLanguage:MainIntent()
 }
 
 sealed interface MainUiState {
+
     data class Success(
         val list: List<String> = listOf(
             "business",
