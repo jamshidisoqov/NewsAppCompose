@@ -15,5 +15,4 @@ interface NewsApi {
         @Query("apiKey") key: String = "2c57cf5b95034a67a9408c2d07919d3b"
     ): Response<BaseNewsData>
 
-
 }

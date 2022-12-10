@@ -106,5 +106,8 @@ dependencies {
     implementation("org.orbit-mvi:orbit-compose:4.3.2")
     implementation("org.orbit-mvi:orbit-viewmodel:4.3.2")
 
+    //Timber
+    implementation 'com.jakewharton.timber:timber:5.0.1'
+
 
 }
