@@ -1,35 +1,46 @@
 package uz.gita.news_app_compose.presentation.screens.main.vm
 
 import uz.gita.news_app_compose.data.remote.response.NewsData
-import uz.gita.news_app_compose.data.remote.response.Source
 import uz.gita.news_app_compose.utils.AppViewModel
-import uz.gita.news_app_compose.utils.ResultData
-import java.util.Locale.Category
+import uz.gita.news_app_compose.utils.languageList
 
 /*CREATED BY
 MATKARIMOV KHAYRULLO 
 IN ()
 */
-interface MainViewModel : AppViewModel<MainIntent, MainUiState, Nothing> {
+interface MainViewModel : AppViewModel<MainIntent, MainUiState, MySideEffect> {
 }
 
 sealed class MainIntent {
     object Search : MainIntent()
-    object SelectLanguage : MainIntent()
+    data class SelectLanguage(val lan:String) : MainIntent()
+    data class SelectedCategory(val category:String):MainIntent()
 }
 
-data class MainUiState(
-    val list: List<String> = listOf(
-        "business",
-        "entertainment",
-        "general",
-        "health",
-        "science",
-        "sports",
-        "technology"
+sealed interface MainUiState {
+    data class Success(
+        val list: List<String> = listOf(
+            "business",
+            "entertainment",
+            "general",
+            "health",
+            "science",
+            "sports",
+            "technology"
+        ),
+        val newsData: List<NewsData> = emptyList()
+    ) : MainUiState
 
-    ),
-    val newsData:List<NewsData>?,
-    val isError:Boolean?,
-    val message: String?,
-)
+    data class Loading(val isLoading: Boolean = false):MainUiState
+
+}
+
+sealed interface MySideEffect {
+
+    data class Message(val message: String) : MySideEffect
+
+    data class Error(val error: String) : MySideEffect
+
+    data class ChooseLanguage(val languagesList: List<String> = languageList) : MySideEffect
+
+}
