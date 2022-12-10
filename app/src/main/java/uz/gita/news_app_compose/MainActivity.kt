@@ -22,25 +22,45 @@ import uz.gita.news_app_compose.navigation.NavigationHandler
 import uz.gita.news_app_compose.presentation.screens.splash.SplashScreen
 import uz.gita.news_app_compose.presentation.ui.theme.NewsAppComposeTheme
 import javax.inject.Inject
+
+@Suppress("OPT_IN_IS_NOT_ENABLED")
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
     @Inject
     lateinit var navigationHandler: NavigationHandler
 
-    @SuppressLint("CoroutineCreationDuringComposition", "FlowOperatorInvokedInComposition")
     @OptIn(ExperimentalAnimationApi::class)
+    @SuppressLint("FlowOperatorInvokedInComposition", "CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             NewsAppComposeTheme {
-
-                Navigator(screen = SplashScreen()) { navigator ->
-                    navigationHandler.navigationStack
-                        .onEach { it.invoke(navigator) }
-                        .launchIn(lifecycleScope)
+                Navigator(screen = SplashScreen(),
+                    onBackPressed = {_ ->
+                        true
+                    }
+                ) { navigator ->
+                    navigationHandler.navStack
+                        .onEach {
+                            it.invoke(navigator)
+                        }.launchIn(lifecycleScope)
                     SlideTransition(navigator)
                 }
             }
         }
+    }
+}
+
+@Composable
+fun Greeting(name: String) {
+    Text(text = "Hello $name!")
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    NewsAppComposeTheme {
+        Greeting("Android")
     }
 }
