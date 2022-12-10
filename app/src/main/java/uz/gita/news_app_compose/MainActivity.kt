@@ -1,8 +1,10 @@
 package uz.gita.news_app_compose
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -10,19 +12,40 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.lifecycleScope
+import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.transitions.SlideTransition
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import uz.gita.news_app_compose.navigation.NavigationHandler
+import uz.gita.news_app_compose.presentation.screens.splash.SplashScreen
 import uz.gita.news_app_compose.presentation.ui.theme.NewsAppComposeTheme
+import javax.inject.Inject
 
+@Suppress("OPT_IN_IS_NOT_ENABLED")
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var navigationHandler: NavigationHandler
+
+    @OptIn(ExperimentalAnimationApi::class)
+    @SuppressLint("FlowOperatorInvokedInComposition", "CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             NewsAppComposeTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
+                Navigator(screen = SplashScreen(),
+                    onBackPressed = {_ ->
+                        true
+                    }
+                ) { navigator ->
+                    navigationHandler.navStack
+                        .onEach {
+                            it.invoke(navigator)
+                        }.launchIn(lifecycleScope)
+                    SlideTransition(navigator)
                 }
             }
         }

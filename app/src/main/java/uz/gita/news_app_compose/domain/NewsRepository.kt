@@ -7,6 +7,6 @@ import uz.gita.news_app_compose.utils.ResultData
 // Created by Jamshid Isoqov on 12/10/2022
 interface NewsRepository {
 
-    fun getAllNewsData():Flow<ResultData<List<NewsData>>>
+    fun getAllNewsData(category:String,country:String):Flow<ResultData<List<NewsData>>>
 
 }
