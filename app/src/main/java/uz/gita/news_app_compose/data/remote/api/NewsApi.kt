@@ -5,7 +5,6 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import uz.gita.news_app_compose.data.remote.response.BaseNewsData
 
-// Created by Jamshid Isoqov on 12/10/2022
 interface NewsApi {
 
     @GET("/v2/top-headlines")
